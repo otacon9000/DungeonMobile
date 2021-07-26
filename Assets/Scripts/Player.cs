@@ -9,11 +9,10 @@ public class Player : MonoBehaviour
     private float _speed;
     [SerializeField]
     private float _jumpForce;
-    [SerializeField]
-    private bool _isGrounded;
+
     [SerializeField]
     private LayerMask _groundLayer;
-    private bool resetJumpNeeded = false;
+    private bool _resetJump = false;
     //jumpForce
     void Start()
     {
@@ -22,47 +21,37 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        Movement();
+    }
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, _groundLayer.value);
-        Debug.DrawRay(transform.position, Vector2.down * 0.8f, Color.red);
-        
-        if (hit.collider != null)
-        {
-            Debug.Log(hit.collider.name);
-            if(resetJumpNeeded == false)
-                _isGrounded = true;
-        }
-
+    private void Movement()
+    {
         float move = Input.GetAxisRaw("Horizontal");
+        _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space)&& _isGrounded == true)
-        {        
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() == true)
+        {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
-            _isGrounded = false;
-            resetJumpNeeded = true;
+
             StartCoroutine(ResetJumpRoutine());
         }
-        _rb.velocity = new Vector2(move /** _speed * Time.deltaTime*/,_rb.velocity.y);
+    }
+
+    private bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, _groundLayer.value);
+        if (hit.collider != null)
+        {
+            if (_resetJump == false)
+                return true;
+        }
+        return false;
     }
 
     IEnumerator ResetJumpRoutine()
     {
+        _resetJump = true;
         yield return new WaitForSeconds(0.1f);
-        resetJumpNeeded = false;
+        _resetJump = false;
     }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Ground"))
-    //    {
-    //        _isGrounded = true;
-    //    }
-    //}
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Ground"))
-    //    {
-    //        _isGrounded = false;
-    //    }
-    //}
 }
