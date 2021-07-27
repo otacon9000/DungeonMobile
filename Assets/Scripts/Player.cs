@@ -9,14 +9,17 @@ public class Player : MonoBehaviour
     private float _speed;
     [SerializeField]
     private float _jumpForce;
-
     [SerializeField]
     private LayerMask _groundLayer;
     private bool _resetJump = false;
-    //jumpForce
+    private bool _canJump;
+
+    private PlayerAnimation _anim;
+    
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<PlayerAnimation>();
     }
 
     void Update()
@@ -24,15 +27,17 @@ public class Player : MonoBehaviour
         Movement();
     }
 
+    
     private void Movement()
     {
         float move = Input.GetAxisRaw("Horizontal");
+        _anim.Move(move);
         _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
-
+        IsGrounded();
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() == true)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
-
+            _anim.Jump(true);
             StartCoroutine(ResetJumpRoutine());
         }
     }
@@ -43,8 +48,12 @@ public class Player : MonoBehaviour
         if (hit.collider != null)
         {
             if (_resetJump == false)
+            {
+                _anim.Jump(false);
                 return true;
+            }
         }
+       
         return false;
     }
 
