@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask _groundLayer;
     private bool _resetJump = false;
-    private bool _canJump;
+    private bool _grounded;
 
     private PlayerAnimation _anim;
     
@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
+        Attack();
     }
 
     
@@ -33,7 +34,8 @@ public class Player : MonoBehaviour
         float move = Input.GetAxisRaw("Horizontal");
         _anim.Move(move);
         _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
-        IsGrounded();
+        _grounded = IsGrounded();
+
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() == true)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
@@ -56,6 +58,17 @@ public class Player : MonoBehaviour
        
         return false;
     }
+
+    private void Attack()
+    {
+        if(Input.GetKeyDown(KeyCode.Mouse0) && IsGrounded() == true)
+        {
+            _anim.BaseAttack();
+        }
+    }
+
+
+
 
     IEnumerator ResetJumpRoutine()
     {
