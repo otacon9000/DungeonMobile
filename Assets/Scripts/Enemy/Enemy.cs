@@ -13,10 +13,64 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected Transform pointA, pointB;
 
-    public virtual void Attack()
+    protected Animator _anim;
+    protected SpriteRenderer _sprite;
+    protected Vector3 currentTarget;
+
+    public virtual void Init()
     {
-        Debug.Log("Attack");
+        _anim = GetComponentInChildren<Animator>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public abstract void Update();
+    public void Start()
+    {
+        Init();
+    }
+
+    public virtual void Update()
+    {
+        if (!IsIdleState())
+        {
+            Movement();
+        }
+    }
+
+    public virtual void Movement()
+    {
+        FlipSprite();
+
+        if (transform.position == pointA.transform.position)
+        {
+            currentTarget = pointB.transform.position;
+            _anim.SetTrigger("Idle");
+        }
+        else if (transform.position == pointB.transform.position)
+        {
+            currentTarget = pointA.transform.position;
+            _anim.SetTrigger("Idle");
+        }
+        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+    }
+
+
+    public virtual bool IsIdleState()
+    {
+        return _anim.GetCurrentAnimatorStateInfo(0).IsName("Idle");
+    }
+
+    public virtual void FlipSprite()
+    {
+        if (currentTarget == pointA.position)
+        {
+            _sprite.flipX = true;
+        }
+        else
+        {
+            _sprite.flipX = false;
+        }
+    }
+
+
+
 }
