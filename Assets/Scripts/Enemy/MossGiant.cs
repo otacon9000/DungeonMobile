@@ -44,10 +44,7 @@ public class MossGiant : Enemy
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget, speed * Time.deltaTime);
     }
 
-    public override void Attack()
-    {
-        
-    }
+
 
     private bool IsIdleState() 
     {  
