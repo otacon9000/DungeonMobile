@@ -17,7 +17,7 @@ public abstract class Enemy : MonoBehaviour
     protected SpriteRenderer _sprite;
     protected Vector3 currentTarget;
     protected bool isHit = false;
-
+    protected bool isDead = false;
     protected Player player;
 
     protected Vector3 direction;
@@ -35,11 +35,15 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
-        if (IsIdleState() && _anim.GetBool("InCombat") == false) 
+        if (IsIdleState() && _anim.GetBool("InCombat") == false)
         {
             return;
         }
-        Movement();
+
+        if (isDead == false)
+        {
+            Movement();
+        }
     }
 
     public virtual void Movement()
