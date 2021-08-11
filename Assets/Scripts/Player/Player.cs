@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private Rigidbody2D _rb;
     [SerializeField]
@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     private PlayerAnimation _anim;
     
+    public int Health { get; set; }
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -75,5 +76,11 @@ public class Player : MonoBehaviour
         _resetJump = true;
         yield return new WaitForSeconds(0.1f);
         _resetJump = false;
+    }
+
+    
+    public void Damage()
+    {
+        Debug.LogError("damage");
     }
 }

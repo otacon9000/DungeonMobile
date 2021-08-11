@@ -16,11 +16,16 @@ public abstract class Enemy : MonoBehaviour
     protected Animator _anim;
     protected SpriteRenderer _sprite;
     protected Vector3 currentTarget;
+    protected bool isHit = false;
 
+    protected Player player;
+
+    protected Vector3 direction;
     public virtual void Init()
     {
         _anim = GetComponentInChildren<Animator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public void Start()
@@ -30,10 +35,11 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
-        if (!IsIdleState())
+        if (IsIdleState() && _anim.GetBool("InCombat") == false) 
         {
-            Movement();
+            return;
         }
+        Movement();
     }
 
     public virtual void Movement()
@@ -50,7 +56,21 @@ public abstract class Enemy : MonoBehaviour
             currentTarget = pointA.transform.position;
             _anim.SetTrigger("Idle");
         }
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+
+        if (isHit == false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        }
+
+        float distance = Vector3.Distance(transform.localPosition, player.transform.localPosition);
+        
+        if (distance > 2.0f)
+        { 
+            isHit = false;
+            _anim.SetBool("InCombat", false);
+        }
+
+        direction = player.transform.localPosition - transform.localPosition;
     }
 
 
@@ -68,6 +88,18 @@ public abstract class Enemy : MonoBehaviour
         else
         {
             _sprite.flipX = false;
+        }
+
+        if (_anim.GetBool("InCombat") == true)
+        {
+            if (direction.x > 0.0f)
+            {
+                _sprite.flipX = false;
+            }
+            else
+            {
+                _sprite.flipX = true;
+            }
         }
     }
 
