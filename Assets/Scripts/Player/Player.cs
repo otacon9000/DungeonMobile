@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerAnimation _anim;
     
     public int Health { get; set; }
+    [SerializeField]
+    private int _gems = 0;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -67,10 +69,7 @@ public class Player : MonoBehaviour, IDamageable
             _anim.BaseAttack();
         }
     }
-
-
-
-
+    
     IEnumerator ResetJumpRoutine()
     {
         _resetJump = true;
@@ -82,5 +81,10 @@ public class Player : MonoBehaviour, IDamageable
     public void Damage()
     {
         Debug.LogError("damage");
+    }
+
+    public void AddGems(int value)
+    {
+        _gems += value;
     }
 }

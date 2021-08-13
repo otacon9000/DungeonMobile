@@ -12,6 +12,10 @@ public abstract class Enemy : MonoBehaviour
     protected int gems;
     [SerializeField]
     protected Transform pointA, pointB;
+    [SerializeField]
+    protected GameObject diamondPrefab;
+
+
 
     protected Animator _anim;
     protected SpriteRenderer _sprite;
@@ -19,13 +23,14 @@ public abstract class Enemy : MonoBehaviour
     protected bool isHit = false;
     protected bool isDead = false;
     protected Player player;
-
+    
     protected Vector3 direction;
     public virtual void Init()
     {
         _anim = GetComponentInChildren<Animator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        
     }
 
     public void Start()

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class MossGiant : Enemy, IDamageable
@@ -15,6 +16,8 @@ public class MossGiant : Enemy, IDamageable
 
     public void Damage()
     {
+        if (isDead == true)
+            return;
         Health--;
         
         _anim.SetTrigger("Hit");
@@ -25,6 +28,8 @@ public class MossGiant : Enemy, IDamageable
         {
             isDead = true;
             _anim.SetTrigger("Death");
+            GameObject diamond = Instantiate(diamondPrefab, transform.position, Quaternion.identity) as GameObject;
+            diamond.GetComponent<Diamond>()._gems = base.gems;
         }
     }
 
