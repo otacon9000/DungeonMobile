@@ -87,4 +87,9 @@ public class Player : MonoBehaviour, IDamageable
     {
         _gems += value;
     }
+
+    public int GetGems()
+    {
+        return _gems;
+    }
 }
