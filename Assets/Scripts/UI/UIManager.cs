@@ -19,14 +19,22 @@ public class UIManager : MonoBehaviour
     }
 
     public Text playerGemsCountText;
+    public Image selectionImg;
 
-    public void OpenShop(int gemsCount)
-    {
-        playerGemsCountText.text = gemsCount.ToString() + "G"; 
-    }
 
     private void Awake()
     {
         _instance = this;
+    }
+
+    public void UpdateGemsCount(int gemsCount)
+    {
+        playerGemsCountText.text = gemsCount.ToString() + "G";
+    }
+
+
+    public void UpdateSelectorPosition(int yPos)
+    {
+        selectionImg.rectTransform.anchoredPosition = new Vector2(selectionImg.rectTransform.anchoredPosition.x, yPos);
     }
 }
