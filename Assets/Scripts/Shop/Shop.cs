@@ -62,9 +62,15 @@ public class Shop : MonoBehaviour
 
         if (_player.GetGems() >= _currentItemCost)
         {
+
+            if(_itemSelected == 2)
+            {
+                GameManager.Instance.HasKeyToCastle = true;
+            }
             Debug.Log("you bought item " + _itemSelected);
             _player.AddGems(-_currentItemCost);
             UIManager.Instance.UpdateGemsCount(_player.GetGems());
+
             shopPanel.SetActive(false);
         }
         else
