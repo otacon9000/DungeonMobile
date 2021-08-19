@@ -14,6 +14,8 @@ public abstract class Enemy : MonoBehaviour
     protected Transform pointA, pointB;
     [SerializeField]
     protected GameObject diamondPrefab;
+    [SerializeField]
+    protected GameObject hitBoxCollider;
 
 
 

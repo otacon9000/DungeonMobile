@@ -16,7 +16,7 @@ public class Shop : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _player = other.GetComponent<Player>();
-            UIManager.Instance.UpdateGemsCount(_player.GetGems());
+            UIManager.Instance.OpenShop(_player.GetGems());
            
             shopPanel.SetActive(true);
 
@@ -69,7 +69,7 @@ public class Shop : MonoBehaviour
             }
             Debug.Log("you bought item " + _itemSelected);
             _player.AddGems(-_currentItemCost);
-            UIManager.Instance.UpdateGemsCount(_player.GetGems());
+            UIManager.Instance.OpenShop(_player.GetGems());
 
             shopPanel.SetActive(false);
         }

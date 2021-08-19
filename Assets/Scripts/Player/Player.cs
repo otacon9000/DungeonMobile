@@ -11,18 +11,28 @@ public class Player : MonoBehaviour, IDamageable
     private float _jumpForce;
     [SerializeField]
     private LayerMask _groundLayer;
+    [SerializeField]
+    private int _gems = 0;
     private bool _resetJump = false;
     private bool _grounded;
 
     private PlayerAnimation _anim;
     
     public int Health { get; set; }
-    [SerializeField]
-    private int _gems = 0;
+    private bool isDead = false;
+
+    private void Awake()
+    {
+
+    }
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<PlayerAnimation>();
+        Health = 4;
+        UIManager.Instance.UpdateGemsCount(_gems);
+        UIManager.Instance.UpdateLives(Health);
     }
 
     void Update()
@@ -34,6 +44,8 @@ public class Player : MonoBehaviour, IDamageable
     
     private void Movement()
     {
+        if (isDead)
+            return;
         float move = Input.GetAxisRaw("Horizontal");
         _anim.Move(move);
         _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
@@ -80,12 +92,22 @@ public class Player : MonoBehaviour, IDamageable
     
     public void Damage()
     {
-        Debug.LogError("damage");
+        
+        Health--;
+        UIManager.Instance.UpdateLives(Health);
+
+        if(Health < 1)
+        {
+            isDead = true;
+            _anim.Death();
+            Debug.Log("Game Over");
+        }
     }
 
     public void AddGems(int value)
     {
         _gems += value;
+        UIManager.Instance.UpdateGemsCount(_gems);
     }
 
     public int GetGems()

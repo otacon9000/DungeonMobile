@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     {
         get
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 Debug.LogError("UIManager is null");
             }
@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
 
     public Text playerGemsCountText;
     public Image selectionImg;
+    public Text gemsCountText;
+    public Image[] livesImg;
 
 
     private void Awake()
@@ -29,12 +31,23 @@ public class UIManager : MonoBehaviour
 
     public void UpdateGemsCount(int gemsCount)
     {
-        playerGemsCountText.text = gemsCount.ToString() + "G";
+        gemsCountText.text = gemsCount.ToString() + "G";
     }
 
 
     public void UpdateSelectorPosition(int yPos)
     {
         selectionImg.rectTransform.anchoredPosition = new Vector2(selectionImg.rectTransform.anchoredPosition.x, yPos);
+    }
+
+    public void OpenShop(int gemsCount)
+    {
+        playerGemsCountText.text = gemsCount.ToString() + "G";
+    }
+
+    public void UpdateLives(int livesRemaining)
+    {
+        if(livesRemaining < 4)
+            livesImg[livesRemaining].enabled = false;
     }
 }
