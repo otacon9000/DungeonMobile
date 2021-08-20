@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private Rigidbody2D _rb;
     [SerializeField]
@@ -11,15 +12,28 @@ public class Player : MonoBehaviour
     private float _jumpForce;
     [SerializeField]
     private LayerMask _groundLayer;
+    [SerializeField]
+    private int _gems = 0;
     private bool _resetJump = false;
     private bool _grounded;
 
     private PlayerAnimation _anim;
     
+    public int Health { get; set; }
+    private bool isDead = false;
+
+    private void Awake()
+    {
+
+    }
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<PlayerAnimation>();
+        Health = 4;
+        UIManager.Instance.UpdateGemsCount(_gems);
+        UIManager.Instance.UpdateLives(Health);
     }
 
     void Update()
@@ -31,12 +45,14 @@ public class Player : MonoBehaviour
     
     private void Movement()
     {
-        float move = Input.GetAxisRaw("Horizontal");
+        if (isDead)
+            return;
+        float move = CrossPlatformInputManager.GetAxisRaw("Horizontal"); //Input.GetAxisRaw("Horizontal");
         _anim.Move(move);
         _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
         _grounded = IsGrounded();
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() == true)
+        if ((Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("B_Button")) && IsGrounded() == true)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             _anim.Jump(true);
@@ -61,19 +77,42 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && IsGrounded() == true)
+        if((/*Input.GetKeyDown(KeyCode.Mouse0) ||*/ CrossPlatformInputManager.GetButtonDown("A_Button")) && IsGrounded() == true)
         {
             _anim.BaseAttack();
         }
     }
-
-
-
-
+    
     IEnumerator ResetJumpRoutine()
     {
         _resetJump = true;
         yield return new WaitForSeconds(0.1f);
         _resetJump = false;
+    }
+
+    
+    public void Damage()
+    {
+        
+        Health--;
+        UIManager.Instance.UpdateLives(Health);
+
+        if(Health < 1)
+        {
+            isDead = true;
+            _anim.Death();
+            Debug.Log("Game Over");
+        }
+    }
+
+    public void AddGems(int value)
+    {
+        _gems += value;
+        UIManager.Instance.UpdateGemsCount(_gems);
+    }
+
+    public int GetGems()
+    {
+        return _gems;
     }
 }
