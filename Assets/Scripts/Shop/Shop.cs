@@ -67,7 +67,7 @@ public class Shop : MonoBehaviour
             {
                 GameManager.Instance.HasKeyToCastle = true;
             }
-            Debug.Log("you bought item " + _itemSelected);
+            
             _player.AddGems(-_currentItemCost);
             UIManager.Instance.OpenShop(_player.GetGems());
 
@@ -76,7 +76,7 @@ public class Shop : MonoBehaviour
         else
         {
             shopPanel.SetActive(false);
-            Debug.Log("no money");
+            
         }
 
     }
