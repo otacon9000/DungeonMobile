@@ -760,10 +760,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 42d283c6-6d0d-42e9-a1eb-17b46fe7c2b7
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: DungeonMobile
+  organizationId: andrea-gamedev
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
