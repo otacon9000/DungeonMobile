@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     public Image selectionImg;
     public Text gemsCountText;
     public Image[] livesImg;
-
+    public Button adsButton;
 
     private void Awake()
     {
@@ -50,4 +50,6 @@ public class UIManager : MonoBehaviour
         if(livesRemaining < 4)
             livesImg[livesRemaining].enabled = false;
     }
+
+
 }

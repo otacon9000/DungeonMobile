@@ -21,8 +21,17 @@ public class GameManager : MonoBehaviour
 
     public bool HasKeyToCastle { get; set; }
 
+    private Player _player;
+
     private void Awake()
     {
         _instance = this;
+        _player = GameObject.Find("Player").GetComponent<Player>();
+    }
+
+    public void UpdatePlayerGemsFromAds(int gemsValue)
+    {
+        _player.AddGems(gemsValue);
+        UIManager.Instance.OpenShop(_player.GetGems());
     }
 }

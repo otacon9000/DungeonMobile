@@ -52,7 +52,7 @@ public class Player : MonoBehaviour, IDamageable
         _rb.velocity = new Vector2(move * _speed , _rb.velocity.y);
         _grounded = IsGrounded();
 
-        if ((/*Input.GetKeyDown(KeyCode.Space)||*/CrossPlatformInputManager.GetButtonDown("B_Button")) && IsGrounded() == true)
+        if ((Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("B_Button")) && IsGrounded() == true)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             _anim.Jump(true);
